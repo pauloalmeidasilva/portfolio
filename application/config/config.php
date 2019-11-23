@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'https://localhost/projeto/Portfolio/';
+$config['base_url'] = 'https://localhost/projeto/portfolio/';
 //$config['base_url'] = 'https://pauloricardo.ga';
 
 /*

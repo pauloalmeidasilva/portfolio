@@ -85,7 +85,7 @@ defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automat
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
 // Constantes personalizadas
-define('CSS', 'https://localhost/projeto/Portfolio/assets/css/');
-define('IMG', 'https://localhost/projeto/Portfolio/assets/img/');
-define('JS', 'https://localhost/projeto/Portfolio/assets/js/');
-define('UPLOAD', 'https://localhost/projeto/Portfolio/upload/');
+define('CSS', 'https://localhost/projeto/portfolio/assets/css/');
+define('IMG', 'https://localhost/projeto/portfolio/assets/img/');
+define('JS', 'https://localhost/projeto/portfolio/assets/js/');
+define('UPLOAD', 'https://localhost/projeto/portfolio/upload/');
