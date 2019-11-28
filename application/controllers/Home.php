@@ -4,14 +4,59 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Home extends CI_Controller {
 
 	public function index()	{
-
-		$this->load->model('pessoa_model');
-		$this->load->model('conhecimentos_model');
-		$this->load->model('formacao_model');
-		$dados['pessoa'] = $this->pessoa_model->getPessoa('1');
-		$dados['conhecimentos'] = $this->conhecimentos_model->getConhecimentos('','1');
-		$dados['formacoes'] = $this->formacao_model->getFormacoes(null, null,'1');
+		$dados = array(
+			'title' => 'Login',
+			'stylesheets' => array(),
+			'scripts' => array(
+				'util.js',
+				'login.js'
+			)
+		);
 		
-		$this->load->view('home', $dados);
+		$this->template->showLogin('login', $dados);
+	}
+
+	public function autenticar(){
+		$json['type'] = 'success';
+
+		$valor = $_GET;
+
+		if(empty($valor['login'])){
+			$json['type'] = 'warning';
+			$json['title'] = 'O campo "Usuário" não pode ser vazio';
+			$json['error'] = '#usuario';
+		}elseif(empty($valor['senha'])){
+			$json['type'] = 'warning';
+			$json['title'] = 'O campo "Senha" não pode ser vazio';
+			$json['error'] = '#senha';
+		}else{
+			$this->load->model('usuario_model');
+			$resultado = $this->usuario_model->login($valor);
+
+			if(!is_null($resultado)){
+				if(password_verify($valor['senha'], $resultado->senha)){
+					$array = json_decode(json_encode($resultado), TRUE);
+
+					unset($array['senha']);
+					
+					$this->session->set_userdata('Dados',$array);
+				}else{
+					$json['type'] = 'error';
+				}
+			}else{
+				$json['type'] = 'error';
+			}
+		}
+
+		if($json['type'] == 'error'){
+			$json['title'] = 'Dados incorretos';
+			$json['error'] = '#usuario,#senha';
+		}
+
+		echo json_encode($json);
+	}
+
+	public function sair(){
+		$this->session->sess_destroy();
 	}
 }

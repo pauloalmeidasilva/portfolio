@@ -1,23 +1,58 @@
-$('#form-login').submit(function(){
+/**
+ * Nome do arquivo:
+ *		login.js
+ *
+ * Descrição:
+ *		Arquivo responsável pelo gerenciamneto da tela de login.
+ *
+ * Estrutura de implementação:
+ *		=> Variáveis globais;
+ *		=> Funções;
+ *		=> Eventos;
+ *		=> Document.ready.
+ *
+ * Revisão:
+ *		27/11/2019 - Primeira implementação;
+ */
+
+$('#form-login').submit(function(e){
+	e.preventDefault()
+
 	$.ajax({
-		method: 'POST',
-		url: BASE_URL + 'login/autenticar',
+		method: 'GET',
+		url: BASE_URL + 'home/autenticar',
 		dataType: 'json',
 		data: $(this).serialize(),
 		beforeSend: function(){
-			clearErrors('#aviso')
-			$('#aviso').html(loadingIMG('Verificando...'))
+			limpar()
+			Load.fire({
+				html: carregar('Verificando...')
+			})
 		},
 		success: function(json){
-			if (json['status'] == 1){
-				clearErrors('#aviso')
-				$('#aviso').html(loadingIMG('Acessando...'))
-				window.location = BASE_URL + "dashboard"
+			console.log(json)
+			limpar()
+			Load.close()
+
+			if(json['type'] == 'success'){
+				Alerta.fire({
+					icon: json['type'],
+					title: 'Pronto',
+					html: carregar('Acessando...'),
+					showConfirmButton: false
+				})
+				window.location = BASE_URL + "painel"
 			}else{
-				showErrors(json["error_list"], '#aviso')
+				Toast.fire({
+					icon: json['type'],
+					title: json['title'],
+				})
+				erro(json['error'])
 			}
 		},
 		error: function(response){
+			limpar()
+			Load.close()
 			console.log(response)
 		}
 	})
