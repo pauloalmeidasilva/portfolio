@@ -1,17 +1,17 @@
 <body>
     <header class="fixed-top shadow" style="height: 60px; background-color: #999;">
         <div class="row">
-            <div class="col-sm-2 text-center pt-2" style="height: 60px;">
-                <span class="align-middle" style="font-size: 20px;"><strong>Portfólio</strong></span>
+            <div class="col-sm-3 col-xl-2 text-center pt-2" style="height: 60px;">
+                <span class="align-middle" style="font-size: 20px;"><strong>Site Portfólio</strong></span>
             </div>
-            <div class="col-sm-10" style="height: 60px;">
-                <div class="container">
+            <div class="col-sm-9 col-xl-10" style="height: 60px;">
+                <div class="container-fluid">
                     <div class="flex-row mt-2">
                         <ul class="nav top-menu justify-content-between">
                             <li class="mt-2">
-                                <span class="text-white">Nome</span>
+                                <span class="text-white"><?=$this->session->userdata('Dados')['nome']?></span>
                             </li>
-                            <li><a class="btn btn-primary" href="<?=base_url('login/encerrar')?>">Encerrar Sessão</a></li>
+                            <li><a class="btn btn-primary mr-2" href="<?=base_url('login/encerrar')?>">Encerrar Sessão</a></li>
                         </ul>
                     </div>
                 </div>
@@ -21,10 +21,10 @@
     <div class="container-fluid">
         <div class="row">
             <aside>
-                <div id="sidebar" class="col-sm-2">
+                <div id="sidebar" class="col-sm-3 col-xl-2">
                     <ul class="menu">
                         <li>
-                            <a class="active" href="<?=base_url('dashboard')?>"><i class="fa fa-chart-bar"></i>&nbsp;<span>Dashboard</span></a>
+                            <a class="active" href="<?=base_url('painel')?>"><i class="fa fa-chart-bar"></i>&nbsp;<span>Painel Principal</span></a>
                         </li>
                         <li>
                             <a href="<?=base_url('conhecimentos')?>"><i class="fas fa-code"></i>&nbsp;<span>Conhecimentos</span></a>
