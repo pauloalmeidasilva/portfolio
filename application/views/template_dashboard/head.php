@@ -19,6 +19,9 @@
 
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+    <!-- Plugin -->
+    <link type="text/css" rel="stylesheet" href="<?=CSS.'plugins/dataTables.bootstrap4.min.css'?>">
     
     <!-- CSS Exclusivo da página -->
     <?php if (isset($stylesheets)) {
@@ -28,7 +31,7 @@
     } ?>
 
     <style type="text/css">
-        
+
         img[alt="www.000webhost.com"]{
             display: none;
         }
