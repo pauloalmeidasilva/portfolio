@@ -3,27 +3,40 @@ $('#porcentagem_experiencia').change(function(){
 	$('#valor').html($('#porcentagem_experiencia').val())
 })
 
-let tabela = function(){
-	$.ajax({
-		method: 'post',
-		url: BASE_URL + 'conhecimentos/listar',
-		dataType: 'json',
-		data: $('#form-pesquisa').serialize(),
-		beforeSend: function(){
-			clearErrors('#conteudo')
-			$('#conteudo').html(loadingIMG('Acessando Banco de Dados...'))
-		},
-		success: function(json){
-			$('#conteudo').html(json)
-		},
-		error: function(response){
-			console.log(response)
-		}
-	})
-}
+let tabela = DataTable({
+	 	"language": {
+            "lengthMenu": "Mostrar _MENU_ registros por página",
+            "zeroRecords": "Nenhum Dado encontrado",
+            "info": "Página _PAGE_ de _PAGES_",
+            "infoEmpty": "Nenhum registro disponível",
+            "infoFiltered": "(filtrado do tatal de _MAX_ registros)"
+        },
+	 	"scrollY": "50vh",
+        "scrollCollapse": true,
+        "paging": false,
+        "searching": false,
+        "ajax": BASE_URL + 'conhecimentos/listar?filtro=' + $('#filtro').val()
+    })
+// let tabela = function(){
+// 	$.ajax({
+// 		method: 'GET',
+// 		url: BASE_URL + 'conhecimentos/listar',
+// 		dataType: 'json',
+// 		data: {"filtro": $('#filtro').val()},
+// 		beforeSend: function(){
+// 		},
+// 		success: function(json){
+// 			console.log(json)
+// 		},
+// 		error: function(response){
+// 			console.log(response)
+// 		}
+// 	})
+// }
 
-$('#conteudo').ready(function(){
-	tabela()
+$(document).ready(function(){
+	 $('#conteudo').html(tabela.update())
+	//tabela()
 })
 
 $('#search-nome').keyup(function(){

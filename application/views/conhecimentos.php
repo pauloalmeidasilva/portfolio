@@ -1,27 +1,42 @@
 
 <!-- MENU LATERAL - FIM -->
 <section class="col-sm-10 offset-sm-2">
-    <div class="card p-3 mx-1 shadow" style="margin-top: 70px;">
+    <div class="card p-5 mx-1 shadow" style="margin-top: 70px;">
         <h3>Conhecimentos</h3>
 
         <div class="text-right">
             <button type="button" id="btn-novo" class="btn btn-success" data-toggle="modal" data-target="#modal-cad">Novo Conhecimento</button>
         </div>
 
-        <form id="form-pesquisa" class="mt-3 mx-5">
+        <form class="mt-3">
             <fieldset>
                 <legend>Filtros</legend>
                 <div class="form-group">
-                    <label for="search-nome">Por Nome</label>
-                    <input type="text" class="form-control" id="search-nome" name="search-nome">
+                    <label for="filtro">Por Nome</label>
+                    <input type="text" class="form-control" id="filtro" name="filtro">
                 </div>
             </fieldset>                        
         </form>
 
-        <h5 id="conhecimentos-aviso" class="text-center"></h5>
-
-        <div id="conteudo" class="container mt-3">
-            <!-- Tabela ou aviso -->
+        <div class="table-responsive mt-3">
+            <table id="conteudo" class="table table-bordered table-striped">
+                <thead class="text-center">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Experiência (anos)</th>
+                        <th>Experiência (%)</th>
+                    </tr>
+                </thead>
+                <tfoot class="text-center">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Experiência (anos)</th>
+                        <th>Experiência (%)</th>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
     </div>
 </section>

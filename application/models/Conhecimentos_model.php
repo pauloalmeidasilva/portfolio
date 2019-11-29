@@ -10,12 +10,10 @@ class Conhecimentos_model extends CI_Model {
 
 	}
 
-	public function getConhecimentos($filtro, $pessoa_id = null) {
-		if ($pessoa_id != null) {
-			$this->db->where('pessoa_id', $pessoa_id);
-		}
+	public function getConhecimentos($filtro){
+		$this->db->where('id_pessoa', $this->session->userdata('Dados')['id_pessoa']);
 		$this->db->like('nome_linguagem', $filtro, 'BOTH');
-		$this->db->order_by('porcentagem_experiencia', 'desc');
+		$this->db->order_by('tempo_experiencia', 'desc');
 		$query = $this->db->get($this->tabela);
 		return  $query->result();
 	}

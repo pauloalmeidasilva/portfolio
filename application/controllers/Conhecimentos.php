@@ -10,10 +10,20 @@ class Conhecimentos extends CI_Controller {
 		}
 	}
 
+	private function atualizaBanco(){
+		$this->load->library('migration');
+
+		if ($this->migration->current() === FALSE){
+			show_error($this->migration->error_string());
+		}
+	}
+
 	public function index()	{
+		$this->atualizaBanco();
 		$data = array(
+			'title' => 'Conhecimentos',
 			'stylesheets' => array(
-				'dashboard.css'
+				'template/dashboard.css'
 			),
 			'scripts' => array(
 				'util.js',
@@ -21,27 +31,24 @@ class Conhecimentos extends CI_Controller {
 			)
 		);
 
-		$this->template->show('conhecimentos', $data);
+		$this->template->showDashboard('conhecimentos', $data);
 	}
 
-	public function listar() {
-
-		if(isset($_POST['search-nome'])){
-			$valor = $_POST['search-nome'];
-		}else{
-			$valor = "";
-		}
-
+	public function listar(){
 		$this->load->model('conhecimentos_model');
-		$dados = $this->conhecimentos_model->getConhecimentos($valor);
+		$json['data'] = array();
+		$valor = $_GET['filtro'];
 
-		$json = '<table class="table table-hover text-center"><thead><tr><th scope="col">Código</th><th scope="col">Nome</th><th scope="col">Tempo de Experiência</th><th>Experiência em %</th><th scope="col">Ações</th></tr></thead><tbody>';
+		$resultado = $this->conhecimentos_model->getConhecimentos($valor);
 
-		foreach ($dados as $valor) {
-			$json .= '<tr id="tr'.$valor->id.'"><th>'.$valor->id.'</th><td>'.$valor->nome_linguagem.'</td><td>'.$valor->tempo_experiencia.'</td><td>'.$valor->porcentagem_experiencia.'%</td><td><button type="button" id="btn-edit" class="btn btn-info" data-toggle="modal" data-target="#modal-cad" data-id="'.$valor->id.'"><i class="fas fa-edit"></i></button> <button type="button" id="btn-delete" class="btn btn-danger" data-toggle="modal" data-target="#modal-del" data-id="'.$valor->id.'" data-nome="'.$valor->nome_linguagem.'"><i class="fas fa-trash-alt"></i></button></td></tr>';
+		foreach ($resultado as $item) {
+			array_push($json['data'], array(
+				$item->id,
+				$item->nome_linguagem,
+				$item->tempo_experiencia,
+				$item->porcentagem_experiencia,
+			));
 		}
-
-		$json .= '</tbody><tfoot><tr><th scope="col">Código</th><th scope="col">Nome</th><th scope="col">Tempo de Experiência</th><th>Experiência em %</th><th scope="col">Ações</th></tr></tfoot></table>';
 
 		echo json_encode($json);
 	}
