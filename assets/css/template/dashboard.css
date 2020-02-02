@@ -9,16 +9,18 @@
 }
 
 .menu > li {
-  padding: 10px 0 10px 0;
+  margin-bottom: 5px;
 }
 
 .menu > li > a {
-  width: 93px;
-  height: 48px;
+  display: block;
+  width: 100%;
   padding-left: 10px;
   text-decoration: none;
   text-anchor: none;
   color: black;
+  font-size: 14px;
+  line-height: 40px;
 }
 
 .menu > li:hover {
@@ -28,6 +30,17 @@
 
 .menu > li:hover > a {
   color: #fff;
+  font-weight: bold;
+}
+
+.menu > li.active {
+  background-color: #009a55;
+  border-radius: 4px;
+}
+
+.menu > li.active > a {
+  color: #fff;
+  font-weight: bold;
 }
 
 .menu > li > a > i {
@@ -41,4 +54,12 @@
   position: fixed;
   height: 100%;
   border-left: 5px solid #007bff;
+}
+
+#conteudo_filter{
+  display: none;
+}
+
+#info{
+  font-size: 13px
 }
