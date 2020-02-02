@@ -14,6 +14,11 @@ class Template {
  
 			// Load content
 			$CI->load->view($view,$data);
+
+			// Load modal
+			foreach ($data['modals'] as $modal) {
+				$CI->load->view('modal/'.$modal, $data);
+			}
  
 			// Load footer
 			$CI->load->view('template_dashboard/footer',$data);
