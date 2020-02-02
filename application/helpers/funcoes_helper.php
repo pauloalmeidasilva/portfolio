@@ -1,19 +1,29 @@
 <?php 
 	defined('BASEPATH') OR exit('No direct script access allowed');
 
-	if(!function_exists('set_msg')){
-		function set_msg($msg=NULL){
-			$ci =& get_instance();
-			$ci->session->set_userdata('aviso', $msg);	
+	if(!function_exists('get_ensino')){
+		function get_ensino(){
+			return array (
+				'1' => 'Ensino Infantil',
+				'2' => 'Ensino Fundamental 1',
+				'3' => 'Ensino Fundamental 2',
+				'4' => 'Ensino Médio',
+				'5' => 'Ensino Técnico',
+				'6' => 'Ensino Superior', // A função get_nivel() está atrelada ao ensino superior, caso mude a numeração do indice mudar também a logica no javascript formacao.js
+			);
 		}
 	}
 
-	if(!function_exists('get_msg')){
-		function get_msg($destroy=True){
-			$ci =& get_instance();
-			$retorno = $ci->session->userdata('aviso');
-			if ($destroy) $ci->session->unset_userdata('aviso');
-			return $retorno;
+	if(!function_exists('get_nivel')){
+		function get_nivel(){
+			return array (
+				'1' => 'Bacharelado',
+				'2' => 'Licenciatura',
+				'3' => 'Tecnologia',
+				'4' => 'Pós-Graduado',
+				'5' => 'Mestrado',
+				'6' => 'Doutorado',
+			);
 		}
 	}
 
@@ -80,25 +90,6 @@
 				'2' => 'Vespertino',
 				'3' => 'Noturno',
 				'4' => 'Integral',
-			);
-		}
-	}
-
-	if(!function_exists('get_escolaridade')){
-		function get_escolaridade(){
-			return array (
-				'1' => 'Alfabetizado',
-				'2' => 'Ensino Fundamental Incompleto',
-				'3' => 'Ensino Fundamental Completo',
-				'4' => 'Ensino Médio Incompleto',
-				'5' => 'Ensino Médio Completo',
-				'6' => 'Ensino Superior Incompleto',
-				'7' => 'Ensino Superior Completo',
-				'8' => 'Pós-Graduado',
-				'9' => 'Mestrado',
-				'10' => 'Doutorado',
-				'11' => 'Pós-Doutorado',
-
 			);
 		}
 	}
