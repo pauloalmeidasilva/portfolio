@@ -60,6 +60,14 @@ const Alerta = Swal.mixin({
 	allowEscapeKey: false
 })
 
+const DT_options = {
+	"lengthMenu": "Mostrar _MENU_ registros por página",
+	"zeroRecords": "Nenhum Dado encontrado",
+	"info": "Página _PAGE_ de _PAGES_",
+	"infoEmpty": "Nenhum registro disponível",
+	"infoFiltered": "(filtrado do tatal de _MAX_ registros)"
+}
+
 /*
  * Funções:
  *		=> limpar(): limpa todas os avisos e retira a classe "is-invalid" dos input;
@@ -78,3 +86,18 @@ const Alerta = Swal.mixin({
  function carregar(mensagem="") {
  	return "<i class='fas fa-spinner fa-pulse'></i>&nbsp;" + mensagem
  }
+
+ function uploadImg(input_file, img){
+ 	$(input_file).change(function(){
+ 		const file = $(this)[0].files[0]
+ 		const fileReader = new FileReader()
+ 		fileReader.onloadend = function(){
+ 			$(img).attr('src', fileReader.result) 
+ 		}
+ 		fileReader.readAsDataURL(file)
+ 	})
+ }
+
+ // $('input, textarea').on('keyup', function(){
+ // 	this.value = this.value.toUpperCase()
+ // })
