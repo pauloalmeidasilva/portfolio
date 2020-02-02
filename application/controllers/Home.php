@@ -30,14 +30,12 @@ class Home extends CI_Controller {
 			$json['title'] = 'O campo "Senha" não pode ser vazio';
 			$json['error'] = '#senha';
 		}else{
-			$this->load->model('usuario_model');
-			$resultado = $this->usuario_model->login($valor);
+			$this->load->model('pessoa_model');
+			$resultado = $this->pessoa_model->login($valor['login']);
 
 			if(!is_null($resultado)){
 				if(password_verify($valor['senha'], $resultado->senha)){
 					$array = json_decode(json_encode($resultado), TRUE);
-
-					unset($array['senha']);
 					
 					$this->session->set_userdata('Dados',$array);
 				}else{
@@ -58,5 +56,6 @@ class Home extends CI_Controller {
 
 	public function sair(){
 		$this->session->sess_destroy();
+		redirect('home','refresh');
 	}
 }

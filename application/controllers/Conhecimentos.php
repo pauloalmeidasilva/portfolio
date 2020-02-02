@@ -6,7 +6,7 @@ class Conhecimentos extends CI_Controller {
 		parent::__construct();
 
 		if(!$this->session->userdata('Dados')){
-		 	redirect('home','refresh');
+			redirect('home','refresh');
 		}
 	}
 
@@ -22,13 +22,16 @@ class Conhecimentos extends CI_Controller {
 		$this->atualizaBanco();
 		$data = array(
 			'title' => 'Conhecimentos',
+			'menu' => 'conhecimento',
 			'stylesheets' => array(
-				'template/dashboard.css'
+				'template/dashboard.css',
 			),
 			'scripts' => array(
 				'util.js',
 				'conhecimentos.js'
-			)
+			),
+			'modals' => array(
+				'modal_conhecimento')
 		);
 
 		$this->template->showDashboard('conhecimentos', $data);
@@ -37,16 +40,17 @@ class Conhecimentos extends CI_Controller {
 	public function listar(){
 		$this->load->model('conhecimentos_model');
 		$json['data'] = array();
-		$valor = $_GET['filtro'];
 
-		$resultado = $this->conhecimentos_model->getConhecimentos($valor);
+		$resultado = $this->conhecimentos_model->getConhecimentos();
 
 		foreach ($resultado as $item) {
 			array_push($json['data'], array(
-				$item->id,
-				$item->nome_linguagem,
-				$item->tempo_experiencia,
-				$item->porcentagem_experiencia,
+				'id' => $item->id,
+				'nome_linguagem' => $item->nome_linguagem,
+				'tempo_experiencia' => $item->tempo_experiencia,
+				'porcentagem_experiencia' => $item->porcentagem_experiencia,
+				'mostrar_curriculo' => ($item->mostrar_curriculo == 0) ? 'NÃO' : 'SIM',
+				'acao' => '<button type="button" class="btn btn-link btn-sm" onclick="javascript:editar('.$item->id.')"><i class="fas fa-edit"></i></button>&nbsp;<button type="button" class="btn btn-link btn-sm text-danger" onclick="javascript:deletar('.$item->id.')"><i class="fas fa-trash"></i></button>',
 			));
 		}
 
@@ -62,59 +66,35 @@ class Conhecimentos extends CI_Controller {
 	}
 
 	public function salvar() {
+		$json['type'] = 'success';
+		$json['title'] = 'Dados alterados com sucesso';
 
-		$json = array();
-		$json['status'] = 1;
-		$json['error_list'] = array();
+		$valor = $this->input->post();
 
-		$valor=$this->input->post();
+		$this->load->model('conhecimentos_model');
+		$resultado = $this->conhecimentos_model->setConhecimento($valor);
 
-		//print_r($valor);
-
-
-		if (empty($valor['nome_linguagem'])) {
-			$json['status'] = 0;
-		}elseif (empty($valor['tempo_experiencia'])) {
-			$json['status'] = 0;
-		}elseif (empty($valor['porcentagem_experiencia'])) {
-			$json['status'] = 0;
-		}else {
-			$this->load->model('conhecimentos_model');
-			$id = $this->conhecimentos_model->setConhecimento($valor);
-
-			if($id == 0){
-				$json['status'] = 0;
-			}
+		if($resultado == 0){
+			$json['type'] = 'error';
+			$json['title'] = 'Dados nao atualizados';
 		}
-
-		if ($json['status'] == 0) {
-				$json['error_list'] = "Cadastro não realizado, informe ou reveja todos os dados.";
-			}
 
 		echo json_encode($json);
 	}
 
-	public function deletar($id) {
-
-		$json = array();
-		$json['status'] = 1;
-		$json['error_list'] = array();
+	public function deletar($id){
+		$json['type'] = 'success';
+		$json['title'] = 'Linguagem detada com sucesso';
 
 		$this->load->model('conhecimentos_model');
 		$result = $this->conhecimentos_model->delConhecimento($id);
 
-		print_r($result);
-
 		if($result == 0){
-			$json['status'] = 0;
-		}
-
-		if ($json['status'] == 0) {
-			$json['error_list'] = "Algo deu errado";
+			$json['type'] = 'error';
+			$json['title'] = 'Linguagem não deletada';
 		}
 
 		echo json_encode($json);
 	}
-
 }
 ?>

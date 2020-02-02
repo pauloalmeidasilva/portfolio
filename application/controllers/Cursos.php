@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Formacao extends CI_Controller {
+class Cursos extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
 
@@ -21,47 +21,33 @@ class Formacao extends CI_Controller {
 	public function index()	{
 		$this->atualizaBanco();
 		$data = array(
-			'title' => 'Formação Acadêmica',
-			'menu' => 'formacao',
+			'title' => 'Cursos Extracurriculares',
+			'menu' => 'curso',
 			'stylesheets' => array(
 				'template/dashboard.css'
 			),
 			'scripts' => array(
 				'util.js',
-				'formacao.js'
+				'curso.js'
 			),
 			'modals' => array(
-				'modal_formacao')
+				'modal_curso')
 		);
 
-		$this->template->showDashboard('formacoes', $data);
+		$this->template->showDashboard('cursos', $data);
 	}
 
 	public function listar(){
-		$this->load->model('formacao_model');
+		$this->load->model('curso_model');
 		$json['data'] = array();
 
-		$resultado = $this->formacao_model->getformacoes();
+		$resultado = $this->curso_model->getCursos();
 
 		foreach ($resultado as $item) {
-			foreach (get_ensino() as $key => $value){
-				if($item->escolaridade == $key){
-					$item->escolaridade = $value;
-				}
-			}
-
-			foreach (get_nivel() as $key => $value){
-				if($item->nivel == $key){
-					$item->nivel = $value;
-				}
-			}
 			array_push($json['data'], array(
 				'id' => $item->id,
 				'nome' => $item->nome,
-				'escolaridade' => $item->escolaridade,
-				'nivel' => $item->nivel,
-				'inicio' => $item->inicio,
-				'termino' => $item->termino,
+				'duracao' => $item->duracao,
 				'mostrar_curriculo' => ($item->mostrar_curriculo == 0) ? 'NÃO' : 'SIM',
 				'acao' => '<button type="button" class="btn btn-link btn-sm" onclick="javascript:editar('.$item->id.')"><i class="fas fa-edit"></i></button>&nbsp;<button type="button" class="btn btn-link btn-sm text-danger" onclick="javascript:deletar('.$item->id.')"><i class="fas fa-trash"></i></button>',
 			));
@@ -84,12 +70,8 @@ class Formacao extends CI_Controller {
 
 		$valor = $this->input->post();
 
-		if (!isset($valor['nivel'])){
-			$valor['nivel'] = null;
-		}
-
-		$this->load->model('formacao_model');
-		$id = $this->formacao_model->setFormacao($valor);
+		$this->load->model('curso_model');
+		$id = $this->curso_model->setCurso($valor);
 
 		if($id == 0){
 			$json['type'] = 'error';

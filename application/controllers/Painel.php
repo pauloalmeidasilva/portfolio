@@ -39,16 +39,16 @@ class Painel extends CI_Controller {
 		$this->atualizaBanco();
 		$dados = array(
 			'title' => 'Painel',
+			'menu' => 'principal',
 			'stylesheets' => array(
 				'template/dashboard.css'),
 			'scripts' => array(
 				'util.js',
 				'dashboard.js'
-			)
+			),
+			'modals' => array()
 		);
 		
 		$this->template->showDashboard('painel', $dados);
-
-
 	}
 }
