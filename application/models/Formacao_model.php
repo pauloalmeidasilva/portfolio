@@ -7,19 +7,11 @@ class Formacao_model extends CI_Model {
 
 	function __construct(){
 		parent::__construct();
-
 	}
 
-	public function getFormacoes($campo = null, $filtro = null, $pessoa_id = null) {
-		if ($pessoa_id != null) {
-			$this->db->where('pessoa_id', $pessoa_id);
-		}
-
-		if ($campo != null) {
-			$this->db->like($campo, $filtro, 'BOTH');
-		}
-		
-		$this->db->order_by('ano_inicio', 'desc');
+	public function getFormacoes(){
+		$this->db->where('id_pessoa', $this->session->userdata('Dados')['id']);
+		$this->db->order_by('inicio', 'desc');
 		$query = $this->db->get($this->tabela);
 		return  $query->result();
 	}
@@ -30,8 +22,7 @@ class Formacao_model extends CI_Model {
 		return  $query->row();
 	}
 
-	public function setFormacao($dados)
-	{
+	public function setFormacao($dados){
 		if(isset($dados['id']) && $dados['id'] > 0){
 			$this->db->where('id', $dados['id']);
 			unset($dados['id']);

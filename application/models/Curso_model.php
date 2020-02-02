@@ -1,28 +1,28 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Conhecimentos_model extends CI_Model {
+class Curso_model extends CI_Model {
 
-	private $tabela = 'conhecimentos';
+	private $tabela = 'cursos';
 
 	function __construct(){
 		parent::__construct();
 	}
 
-	public function getConhecimentos(){
+	public function getCursos(){
 		$this->db->where('id_pessoa', $this->session->userdata('Dados')['id']);
-		$this->db->order_by('tempo_experiencia', 'desc');
+		$this->db->order_by('nome', 'asc');
 		$query = $this->db->get($this->tabela);
 		return  $query->result();
 	}
 
-	public function getConhecimento($id) {
+	public function getFormacao($id) {
 		$this->db->where('id', $id);
 		$query = $this->db->get($this->tabela);
 		return  $query->row();
 	}
 
-	public function setConhecimento($dados)	{
+	public function setCurso($dados){
 		if(isset($dados['id']) && $dados['id'] > 0){
 			$this->db->where('id', $dados['id']);
 			unset($dados['id']);
@@ -34,7 +34,7 @@ class Conhecimentos_model extends CI_Model {
 		}
 	}
 
-	public function delConhecimento($id){
+	public function delFormacao($id){
 		$this->db->where('id', $id);
 		$this->db->delete($this->tabela);
 		return $this->db->affected_rows();
