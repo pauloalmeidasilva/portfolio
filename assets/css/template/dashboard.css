@@ -1,6 +1,64 @@
-* {
-  margin: 0;
-  padding: 0;
+:root{
+  --cabecalho: gray;
+  --menu: darkgray;
+  --menu-item: #000;
+  --fundo: #eee;
+}
+
+/*=============================================
+=                    Geral                    =
+=============================================*/
+
+*, html, body {
+  margin:0;
+  padding:0;
+}
+
+/*=================  Geral  =================*/
+
+/*=================================================
+=                    Cabeçalho                    =
+=================================================*/
+
+header{
+  height: 60px;
+  background-color: var(--cabecalho, #999);
+}
+
+/*=================  Cabeçalho  =================*/
+
+/*=============================================
+=                    Menu                    =
+=============================================*/
+
+#lateral {
+  z-index: 1500 !important;
+  margin-top: 60px;
+  padding: 10px 60px 10px 10px;
+  -moz-transition: all 0.5s ease;
+  -webkit-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  font-size:1.2em;
+  background: var(--menu, #000);
+  height:100%;
+  width:300px; 
+  position:fixed;
+  top:0;
+  left:-250px;
+}
+
+#lateral:hover:before, #lateral:focus:before {
+  left:-500px
+}
+#lateral:hover, #lateral:focus, #lateral:active {
+  z-index: 1500 !important;
+  box-shadow: 10px 5px 15px darkgray;
+  -moz-transform: translate(250px, 0);
+  -webkit-transform: translate(250px, 0);
+  -o-transform: translate(250px, 0);
+  transform: translate(250px, 0);
+  padding-right:0;
 }
 
 .menu {
@@ -9,16 +67,17 @@
 }
 
 .menu > li {
+  margin-right: 13px;
   margin-bottom: 5px;
 }
 
 .menu > li > a {
   display: block;
-  width: 100%;
+  width: 90%;
   padding-left: 10px;
   text-decoration: none;
   text-anchor: none;
-  color: black;
+  color: var(--menu-item, #999);
   font-size: 14px;
   line-height: 40px;
 }
@@ -48,18 +107,50 @@
   margin-right: 15px;
 }
 
-#sidebar {
-  padding-top: 70px;
-  background-color: #ccc;
-  position: fixed;
-  height: 100%;
-  border-left: 5px solid #007bff;
+a.nav-link.active {
+  color: #007bff !important;
+  font-weight: bold;
+  text-shadow: 2px 2px 5px;
 }
 
-#conteudo_filter{
+/*=================  Menu  =================*/
+
+/*=============================================
+=                    Corpo                    =
+=============================================*/
+
+body{
+  background-color: var(--fundo, #999);
+}
+
+.margem{
+  margin-top: 80px;
+  margin-bottom: 20px;
+}
+
+.offset{
+  margin-left: 50px;
+  width: calc(100% - 50px);
+}
+
+.full-width{
+  width: 100%;
+}
+
+.btn-120{
+  min-width: 120px;
+}
+
+.tab-pane{
+  min-height: 300px;
+}
+
+#conteudo_filter, #conteudo-tipo_filter, #conteudo-status_filter{
   display: none;
 }
 
 #info{
   font-size: 13px
 }
+
+/*=================  Corpo  =================*/
