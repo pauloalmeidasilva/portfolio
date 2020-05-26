@@ -1,15 +1,101 @@
-let tabela = function(){
+$('#descricao').on('keyup', function(){
+	let max = parseInt($(this).attr('maxlength'))
+	let char = $(this).val()
+
+	$('#info').html((max - char.length) + ' caracteres')
+})
+
+$('#modal-curso').on('hidden.bs.modal', function(){
+	$('#form-novo')[0].reset()
+	$('#id').val('')
+	$('#mostrar_curriculo').removeAttr('checked')
+})
+
+$('#filtro').on('keyup', function(){
+	tabela.search(this.value).draw();
+})
+
+let tabela = $('#conteudo').DataTable({
+	"language": DT_options,
+	"lengthChange": false,
+	"pageLength": 5,
+	"ajax": BASE_URL + 'experiencias/listar',
+	"columns": [
+	{ "data": "id" },
+	{ "data": "cargo" },
+	{ "data": "empresa" },
+	{ "data": "inicio" },
+	{ "data": "termino" },
+	{ "data": "mostrar_curriculo" },
+	{ "data": "acao" }
+	],
+	"columnDefs": [
+	{ className: "text-center text-nowrap", "targets": '_all' }
+	]
+})
+
+$('#btn-cad').click(function(){
 	$.ajax({
 		method: 'post',
-		url: BASE_URL + 'experiencia/listar',
+		url: BASE_URL + 'experiencias/salvar',
 		dataType: 'json',
-		data: $('#form-pesquisa').serialize(),
+		data: $('#form-novo').serialize(),
 		beforeSend: function(){
-			clearErrors('#conteudo')
-			$('#conteudo').html(loadingIMG('Acessando Banco de Dados...'))
+			Load.fire({
+				html: carregar('Atualizando Banco de Dados...')
+			})
 		},
 		success: function(json){
-			$('#conteudo').html(json)
+			console.log(json)
+			Load.close()
+
+			Toast.fire({
+				icon: json['type'],
+				title: json['title'],
+			})
+
+			if(json['type'] == 'success'){
+				tabela.ajax.reload()
+				$('#modal-trabalho').modal('hide')
+			}
+		},
+		error: function(response){
+			console.log(response)
+		}
+	})
+})
+
+function editar(id) {
+	$.ajax({
+		method: 'get',
+		url: BASE_URL + 'experiencias/visualizar/'+id,
+		dataType: 'json',
+		beforeSend: function(){
+			Load.fire({
+				html: carregar('Acessando Banco de Dados...')
+			})
+		},
+		success: function(json){
+			console.log(json)
+			Load.close()
+
+			$.each(json, function(id, valor){
+				if(id == 'mostrar_curriculo'){
+					if(valor == 1){
+						$('#'+id).attr('checked', '')
+					}else{
+						$('#'+id).removeAttr('checked')
+					}
+				}else{
+					$('#'+id).val(valor)
+				}
+			})
+
+			let max = parseInt($('#descricao').attr('maxlength'))
+			let char = $('#descricao').val()
+			$('#info').html((max - char.length) + ' caracteres')
+
+			$('#modal-curso').modal('show')
 		},
 		error: function(response){
 			console.log(response)
@@ -17,94 +103,51 @@ let tabela = function(){
 	})
 }
 
-$('#conteudo').ready(function(){
-	tabela()
-})
-
-$('#search-curso').keyup(function(){
-	tabela()
-})
-
-$('#btn-cad').click(function(){
-	$.ajax({
-		method: 'post',
-		url: BASE_URL + 'experiencia/salvar',
-		dataType: 'json',
-		data: $('#form-novo').serialize(),
-		//beforeSend: function(){ clearErrors('#user_aviso') $('#user_aviso').html(loadingIMG('Acessando Banco de Dados...')) },
-		success: function(json){
-			if (json['status'] == 1){
-				clearErrors('#formacao_aviso')
-			}else{
-				showErrors(json["error_list"], '#formacao_aviso')
-			}
+function deletar(id){
+	Swal.fire({
+		text: "Você tem certeza que deseja deletar este Curso?",
+		icon: 'warning',
+		showCancelButton: true,
+		cancelButtonColor: '#aaa',
+		cancelButtonText: 'Cancelar',
+		confirmButtonColor: 'red',
+		confirmButtonText: 'Deletar',
+		showClass: {
+			popup: 'animated zoomIn faster'
 		},
-		error: function(response){
-			console.log(response)
+		hideClass: {
+			popup: 'animated zoomOut faster'
+		},
+		allowOutsideClick: false,
+		allowEscapeKey: false
+	}).then((result) => {
+		if(result.value){
+			$.ajax({
+				method: 'get',
+				url: BASE_URL + 'cursos/deletar/'+id,
+				dataType: 'json',
+				beforeSend: function(){
+					Load.fire({
+						html: carregar('Acessando Banco de Dados...')
+					})
+				},
+				success: function(json){
+					console.log(json)
+					Load.close()
+
+					Toast.fire({
+						icon: json['type'],
+						title: json['title'],
+					})
+
+					if(json['type'] == 'success'){
+						tabela.ajax.reload()
+					}
+				},
+				error: function(response){
+					console.log(response)
+				}
+			})
 		}
 	})
-	$('#modal-cad').modal('hide')
-
-	tabela()
-})
-
-$('#modal-cad').on('show.bs.modal', function (e) {
-	let id = $(e.relatedTarget).data('id')
-
-	//alert(id)
-
-	if (typeof id === "undefined") {
-		$('#modal-cad-label').html('Cadastrar Formação')
-		$(this).find('#id').val('')
-		$(this).find('input:text').val('')
-	}else{
-		//alert('editando')
-		$.ajax({
-			method: 'post',
-			url: BASE_URL + 'experiencia/visualizar/'+id,
-			dataType: 'json',
-			success: function(json){
-				$.each(json, function(id, message) {
-					//alert(id+': '+message)
-					$('#'+id).val(message)
-				})
-				$('#modal-cad-label').html('Editar Formação')
-			},
-			error: function(response){
-				console.log(response)
-			}
-		})
-	}
-	
-	tabela()
-})
-
-$('#modal-del').on('show.bs.modal', function (e) {
-	let id = $(e.relatedTarget).data('id')
-	let nome = $(e.relatedTarget).data('nome')
-
-	$('#id-del').html(id)
-	$('#nome-del').html(nome)
-})
-
-$('#btn-del').click(function(){
-	let id = $('#id-del').html()
-	$.ajax({
-		method: 'post',
-		url: BASE_URL + 'experiencia/deletar/'+id,
-		dataType: 'json',
-		success: function(json){
-			if (json['status'] == 1){
-				clearErrors('#formacao_aviso')
-			}else{
-				showErrors(json["error_list"], '#formacao_aviso')
-			}
-		},
-		error: function(response){
-			console.log(response)
-		}
-	})
-	$('#modal-del').modal('hide')
-
-	tabela()
-})
+}

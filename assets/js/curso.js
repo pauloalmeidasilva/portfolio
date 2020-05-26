@@ -5,15 +5,7 @@ $('#descricao').on('keyup', function(){
 	$('#info').html((max - char.length) + ' caracteres')
 })
 
-$('#escolaridade').on('change', function(){
-	// Esta lógica está atrelada com a função get_ensino do arquivo funcoes_helper, verificar se a opção ensino superior está com o indice igual ao da condição abaixo
-	if($(this).val() == '6')
-		$('#nivel').removeAttr('disabled')
-	else
-		$('#nivel').attr('disabled', '')
-})
-
-$('#modal-formacao').on('hidden.bs.modal', function(){
+$('#modal-curso').on('hidden.bs.modal', function(){
 	$('#form-novo')[0].reset()
 	$('#id').val('')
 	$('#mostrar_curriculo').removeAttr('checked')
@@ -36,7 +28,7 @@ let tabela = $('#conteudo').DataTable({
 	{ "data": "acao" }
 	],
 	"columnDefs": [
-	{ className: "text-center", "targets": '_all' }
+	{ className: "text-center text-nowrap", "targets": '_all' }
 	]
 })
 
@@ -74,7 +66,7 @@ $('#btn-cad').click(function(){
 function editar(id) {
 	$.ajax({
 		method: 'get',
-		url: BASE_URL + 'formacao/visualizar/'+id,
+		url: BASE_URL + 'cursos/visualizar/'+id,
 		dataType: 'json',
 		beforeSend: function(){
 			Load.fire({
@@ -86,14 +78,7 @@ function editar(id) {
 			Load.close()
 
 			$.each(json, function(id, valor){
-				if(id == 'nivel'){
-					if(valor != null){
-						$('#nivel').removeAttr('disabled')
-						$('#'+id).val(valor)
-					}else{
-						$('#nivel').attr('disabled', '')
-					}
-				}else if(id == 'mostrar_curriculo'){
+				if(id == 'mostrar_curriculo'){
 					if(valor == 1){
 						$('#'+id).attr('checked', '')
 					}else{
@@ -108,7 +93,7 @@ function editar(id) {
 			let char = $('#descricao').val()
 			$('#info').html((max - char.length) + ' caracteres')
 
-			$('#modal-formacao').modal('show')
+			$('#modal-curso').modal('show')
 		},
 		error: function(response){
 			console.log(response)
@@ -118,7 +103,7 @@ function editar(id) {
 
 function deletar(id){
 	Swal.fire({
-		text: "Você tem certeza que deseja deletar esta Formação Acadêmica?",
+		text: "Você tem certeza que deseja deletar este Curso?",
 		icon: 'warning',
 		showCancelButton: true,
 		cancelButtonColor: '#aaa',
@@ -137,7 +122,7 @@ function deletar(id){
 		if(result.value){
 			$.ajax({
 				method: 'get',
-				url: BASE_URL + 'formacao/deletar/'+id,
+				url: BASE_URL + 'cursos/deletar/'+id,
 				dataType: 'json',
 				beforeSend: function(){
 					Load.fire({

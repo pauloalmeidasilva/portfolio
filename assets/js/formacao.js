@@ -39,7 +39,7 @@ let tabela = $('#conteudo').DataTable({
 	{ "data": "acao" }
 	],
 	"columnDefs": [
-	{ className: "text-center", "targets": '_all' }
+	{ className: "text-center text-nowrap", "targets": '_all' }
 	]
 })
 

@@ -1,20 +1,13 @@
-$('#valor').html($('#porcentagem_experiencia').val())
-$('#porcentagem_experiencia').change(function(){
-	$('#valor').html($('#porcentagem_experiencia').val())
-})
-
-
-let tabela = $('#conteudo').DataTable({
+let tabela2 = $('#conteudo-status').DataTable({
 	"language": DT_options,
 	"lengthChange": false,
 	"pageLength": 5,
-	"ajax": BASE_URL + 'conhecimentos/listar',
+	"ajax": BASE_URL + 'configuracoes/listarStatus',
 	"columns": [
 	{ "data": "id" },
-	{ "data": "nome_linguagem" },
-	{ "data": "tempo_experiencia" },
-	{ "data": "porcentagem_experiencia" },
-	{ "data": "mostrar_curriculo" },
+	{ "data": "descricao" },
+	{ "data": "cor" },
+	{ "data": "status" },
 	{ "data": "acao" }
 	],
 	"columnDefs": [
@@ -25,7 +18,7 @@ let tabela = $('#conteudo').DataTable({
 function editar(id) {
 	$.ajax({
 		method: 'get',
-		url: BASE_URL + 'conhecimentos/visualizar/'+id,
+		url: BASE_URL + 'configuracoes/visualizarStatus/'+id,
 		dataType: 'json',
 		beforeSend: function(){
 			Load.fire({
@@ -37,22 +30,8 @@ function editar(id) {
 			Load.close()
 
 			$.each(json, function(id, valor){
-				if(id == 'porcentagem_experiencia'){
-					$('#valor').html(valor)
-					$('#'+id).val(valor)
-				}else if(id == 'mostrar_curriculo'){
-					if(valor == 1)
-						$('#'+id).attr('checked', '')
-					else
-						$('#'+id).removeAttr('checked')
-				}else{
-					$('#'+id).val(valor)
-				}
-
-
+				$('#'+id+'-status').val(valor)
 			})
-
-			$('#modal-cad').modal('show')
 		},
 		error: function(response){
 			console.log(response)
@@ -62,7 +41,7 @@ function editar(id) {
 
 function deletar(id){
 	Swal.fire({
-		text: "Você tem certeza que deseja deletar esta Linguagem?",
+		text: "A exclusão deste status só será possível caso nenhum Projeto esteja vinculado a ele. Você tem certeza que deseja deletar este status?",
 		icon: 'warning',
 		showCancelButton: true,
 		cancelButtonColor: '#aaa',
@@ -81,7 +60,7 @@ function deletar(id){
 		if(result.value){
 			$.ajax({
 				method: 'get',
-				url: BASE_URL + 'conhecimentos/deletar/'+id,
+				url: BASE_URL + 'configuracoes/deletarStatus/'+id,
 				dataType: 'json',
 				beforeSend: function(){
 					Load.fire({
@@ -98,7 +77,7 @@ function deletar(id){
 					})
 
 					if(json['type'] == 'success'){
-						tabela.ajax.reload()
+						tabela2.ajax.reload()
 					}
 				},
 				error: function(response){
@@ -109,23 +88,12 @@ function deletar(id){
 	})
 }
 
-$('#filtro').on('keyup', function(){
-	tabela.search(this.value).draw();
-})
-
-$('#modal-cad').on('hidden.bs.modal', function(){
-	$('#form-novo')[0].reset()
-	$('#id').val('')
-	$('#valor').html('25')
-	$('#mostrar_curriculo').removeAttr('checked')
-})
-
-$('#btn-cad').click(function(){
+$('#btn-salvar-status').click(function(){
 	$.ajax({
 		method: 'post',
-		url: BASE_URL + 'conhecimentos/salvar',
+		url: BASE_URL + 'configuracoes/salvarStatus',
 		dataType: 'json',
-		data: $('#form-novo').serialize(),
+		data: $('#form-status').serialize(),
 		beforeSend: function(){
 			Load.fire({
 				html: carregar('Atualizando Banco de Dados...')
@@ -141,8 +109,9 @@ $('#btn-cad').click(function(){
 			})
 
 			if(json['type'] == 'success'){
-				tabela.ajax.reload()
-				$('#modal-cad').modal('hide')
+				tabela2.ajax.reload()
+				$('#form-status')[0].reset()
+				$('#id-status').val('')
 			}
 		},
 		error: function(response){

@@ -1,20 +1,12 @@
-$('#valor').html($('#porcentagem_experiencia').val())
-$('#porcentagem_experiencia').change(function(){
-	$('#valor').html($('#porcentagem_experiencia').val())
-})
-
-
-let tabela = $('#conteudo').DataTable({
+let tabela = $('#conteudo-tipo').DataTable({
 	"language": DT_options,
 	"lengthChange": false,
 	"pageLength": 5,
-	"ajax": BASE_URL + 'conhecimentos/listar',
+	"ajax": BASE_URL + 'configuracoes/listarTipo',
 	"columns": [
 	{ "data": "id" },
-	{ "data": "nome_linguagem" },
-	{ "data": "tempo_experiencia" },
-	{ "data": "porcentagem_experiencia" },
-	{ "data": "mostrar_curriculo" },
+	{ "data": "descricao" },
+	{ "data": "status" },
 	{ "data": "acao" }
 	],
 	"columnDefs": [
@@ -25,7 +17,7 @@ let tabela = $('#conteudo').DataTable({
 function editar(id) {
 	$.ajax({
 		method: 'get',
-		url: BASE_URL + 'conhecimentos/visualizar/'+id,
+		url: BASE_URL + 'configuracoes/visualizarTipo/'+id,
 		dataType: 'json',
 		beforeSend: function(){
 			Load.fire({
@@ -37,22 +29,8 @@ function editar(id) {
 			Load.close()
 
 			$.each(json, function(id, valor){
-				if(id == 'porcentagem_experiencia'){
-					$('#valor').html(valor)
-					$('#'+id).val(valor)
-				}else if(id == 'mostrar_curriculo'){
-					if(valor == 1)
-						$('#'+id).attr('checked', '')
-					else
-						$('#'+id).removeAttr('checked')
-				}else{
-					$('#'+id).val(valor)
-				}
-
-
+				$('#'+id+'-tipo').val(valor)
 			})
-
-			$('#modal-cad').modal('show')
 		},
 		error: function(response){
 			console.log(response)
@@ -62,7 +40,7 @@ function editar(id) {
 
 function deletar(id){
 	Swal.fire({
-		text: "Você tem certeza que deseja deletar esta Linguagem?",
+		text: "A exclusão deste tipo só será possível caso nenhum Projeto esteja vinculado a ele. Você tem certeza que deseja deletar este tipo?",
 		icon: 'warning',
 		showCancelButton: true,
 		cancelButtonColor: '#aaa',
@@ -81,7 +59,7 @@ function deletar(id){
 		if(result.value){
 			$.ajax({
 				method: 'get',
-				url: BASE_URL + 'conhecimentos/deletar/'+id,
+				url: BASE_URL + 'configuracoes/deletarTipo/'+id,
 				dataType: 'json',
 				beforeSend: function(){
 					Load.fire({
@@ -109,23 +87,12 @@ function deletar(id){
 	})
 }
 
-$('#filtro').on('keyup', function(){
-	tabela.search(this.value).draw();
-})
-
-$('#modal-cad').on('hidden.bs.modal', function(){
-	$('#form-novo')[0].reset()
-	$('#id').val('')
-	$('#valor').html('25')
-	$('#mostrar_curriculo').removeAttr('checked')
-})
-
-$('#btn-cad').click(function(){
+$('#btn-salvar-tipo').click(function(){
 	$.ajax({
 		method: 'post',
-		url: BASE_URL + 'conhecimentos/salvar',
+		url: BASE_URL + 'configuracoes/salvarTipo',
 		dataType: 'json',
-		data: $('#form-novo').serialize(),
+		data: $('#form-tipo').serialize(),
 		beforeSend: function(){
 			Load.fire({
 				html: carregar('Atualizando Banco de Dados...')
@@ -142,7 +109,8 @@ $('#btn-cad').click(function(){
 
 			if(json['type'] == 'success'){
 				tabela.ajax.reload()
-				$('#modal-cad').modal('hide')
+				$('#form-tipo')[0].reset()
+				$('#id-tipo').val('')
 			}
 		},
 		error: function(response){

@@ -1,31 +1,41 @@
-$('#valor').html($('#porcentagem_experiencia').val())
-$('#porcentagem_experiencia').change(function(){
-	$('#valor').html($('#porcentagem_experiencia').val())
+$("#img_1").on('click', function() {
+	$('#upload_1').trigger('click')
+	uploadImg($('#upload_1'), $("#img_1"))
 })
 
+$("#img_2").on('click', function() {
+	$('#upload_2').trigger('click')
+	uploadImg($('#upload_2'), $("#img_2"))
+})
+
+$("#img_3").on('click', function() {
+	$('#upload_3').trigger('click')
+	uploadImg($('#upload_3'), $("#img_3"))
+})
 
 let tabela = $('#conteudo').DataTable({
 	"language": DT_options,
 	"lengthChange": false,
 	"pageLength": 5,
-	"ajax": BASE_URL + 'conhecimentos/listar',
+	"ajax": BASE_URL + 'portfolio/listar',
 	"columns": [
 	{ "data": "id" },
-	{ "data": "nome_linguagem" },
-	{ "data": "tempo_experiencia" },
-	{ "data": "porcentagem_experiencia" },
+	{ "data": "imagem" },
+	{ "data": "nome" },
+	{ "data": "tipo" },
+	{ "data": "status" },
 	{ "data": "mostrar_curriculo" },
 	{ "data": "acao" }
 	],
 	"columnDefs": [
-	{ className: "text-center text-nowrap", "targets": '_all' }
+	{ className: "text-center text-nowrap align-middle", "targets": '_all' }
 	]
 })
 
 function editar(id) {
 	$.ajax({
 		method: 'get',
-		url: BASE_URL + 'conhecimentos/visualizar/'+id,
+		url: BASE_URL + 'portfolio/visualizar/'+id,
 		dataType: 'json',
 		beforeSend: function(){
 			Load.fire({
@@ -37,10 +47,13 @@ function editar(id) {
 			Load.close()
 
 			$.each(json, function(id, valor){
-				if(id == 'porcentagem_experiencia'){
-					$('#valor').html(valor)
-					$('#'+id).val(valor)
-				}else if(id == 'mostrar_curriculo'){
+				if(id == 'foto_1'){
+					$('#img_1').attr('src', BASE_URL+'upload/'+valor)
+				}else if(id == 'foto_2'){
+					$('#img_2').attr('src', BASE_URL+'upload/'+valor)
+				}else if(id == 'foto_3'){
+					$('#img_3').attr('src', BASE_URL+'upload/'+valor)
+				}else if(id == 'mostrar_curriculo' || id == 'mostrar_link'){
 					if(valor == 1)
 						$('#'+id).attr('checked', '')
 					else
@@ -120,12 +133,15 @@ $('#modal-cad').on('hidden.bs.modal', function(){
 	$('#mostrar_curriculo').removeAttr('checked')
 })
 
-$('#btn-cad').click(function(){
+$('#form-novo').on('submit', function(e){
+	e.preventDefault()
 	$.ajax({
 		method: 'post',
-		url: BASE_URL + 'conhecimentos/salvar',
+		url: BASE_URL + 'portfolio/salvar',
 		dataType: 'json',
-		data: $('#form-novo').serialize(),
+		data: new FormData(this),
+		contentType: false,
+		processData: false,
 		beforeSend: function(){
 			Load.fire({
 				html: carregar('Atualizando Banco de Dados...')
@@ -149,4 +165,8 @@ $('#btn-cad').click(function(){
 			console.log(response)
 		}
 	})
+})
+
+$('#btn-cad').on('click', function(){
+	$('#form-novo').submit()
 })
