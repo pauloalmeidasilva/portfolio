@@ -1,29 +1,28 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Experiencia_model extends CI_Model {
+class Portfolio_model extends CI_Model {
 
-	private $tabela = 'trabalhos';
+	private $tabela = 'portfolio';
 
 	function __construct(){
 		parent::__construct();
-
 	}
 
-	public function getExperiencias() {
+	public function getPortfolios(){
 		$this->db->where('id_pessoa', $this->session->userdata('Dados')['id']);
-		$this->db->order_by('inicio', 'desc');
+		$this->db->order_by('nome', 'desc');
 		$query = $this->db->get($this->tabela);
 		return  $query->result();
 	}
 
-	public function getExperiencia($id) {
+	public function getPortfolio($id){
 		$this->db->where('id', $id);
 		$query = $this->db->get($this->tabela);
 		return  $query->row();
 	}
 
-	public function setExperiencia($dados){
+	public function setPortfolio($dados)	{
 		if(isset($dados['id']) && $dados['id'] > 0){
 			$this->db->where('id', $dados['id']);
 			unset($dados['id']);
@@ -35,10 +34,22 @@ class Experiencia_model extends CI_Model {
 		}
 	}
 
-	public function delExperiencia($id){
+	public function delConhecimento($id){
 		$this->db->where('id', $id);
 		$this->db->delete($this->tabela);
 		return $this->db->affected_rows();
+	}
+
+	public function tipoVinculado($id){
+		$this->db->where('tipo', $id);
+		$query = $this->db->get($this->tabela);
+		return $query->num_rows();
+	}
+
+	public function statusVinculado($id){
+		$this->db->where('status', $id);
+		$query = $this->db->get($this->tabela);
+		return $query->num_rows();
 	}
 }
 

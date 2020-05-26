@@ -16,7 +16,7 @@ class Curso_model extends CI_Model {
 		return  $query->result();
 	}
 
-	public function getFormacao($id) {
+	public function getCurso($id) {
 		$this->db->where('id', $id);
 		$query = $this->db->get($this->tabela);
 		return  $query->row();
@@ -34,7 +34,7 @@ class Curso_model extends CI_Model {
 		}
 	}
 
-	public function delFormacao($id){
+	public function delCurso($id){
 		$this->db->where('id', $id);
 		$this->db->delete($this->tabela);
 		return $this->db->affected_rows();
