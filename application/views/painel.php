@@ -1,12 +1,10 @@
-
-            <!-- MENU LATERAL - FIM -->
-            <section class="col-sm-9 offset-sm-3 col-xl-10 offset-xl-2">
-                <div class="card p-3 mx-1 shadow" style="margin-top: 80px;">
-                    <h3>Painel Principal</h3>
-
-                    
-                </div>
-            </section>
-
-        </div>
-    </div>
+<section class="container-fluid margem offset">
+	<div class="card shadow">
+		<div class="card-header">
+			<h3>Painel Principal</h3>
+		</div>
+		<div class="card-body">
+			
+		</div>
+	</div>
+</section>

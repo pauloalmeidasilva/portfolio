@@ -17,5 +17,6 @@
                 </div>
                 <button type="submit" class="btn btn-primary btn-block btn-flat">Entrar</button>
             </form>
+            <div class="text-center mt-3">Usuário: administrador - Senha: abcd1234</div>
         </div>
     </div>
