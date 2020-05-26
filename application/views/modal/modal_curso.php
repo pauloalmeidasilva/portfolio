@@ -20,6 +20,10 @@
                         <input type="text" id="instituicao" name="instituicao" class="form-control" maxlength="100">
                     </div>
                     <div class="form-group">
+                        <label for="duracao">Duração do Curso (horas)</label>
+                        <input type="number" id="duracao" name="duracao" class="form-control" min="0" max="500">
+                    </div>
+                    <div class="form-group">
                         <label for="descricao">Descricao</label>
                         <textarea class="form-control" id="descricao" name="descricao" rows="3" maxlength="500"></textarea>
                         <div class="text-right" id="info">500 caracteres</div>
