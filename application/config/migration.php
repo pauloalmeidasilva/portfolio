@@ -57,7 +57,7 @@ $config['migration_table'] = 'versao';
 | in your code to have the latest migration.
 |
 */
-$config['migration_auto_latest'] = FALSE;
+$config['migration_auto_latest'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,7 +69,7 @@ $config['migration_auto_latest'] = FALSE;
 | be upgraded / downgraded to.
 |
 */
-$config['migration_version'] = '20200202124645';
+$config['migration_version'] = '20200223133205';
 
 /*
 |--------------------------------------------------------------------------
