@@ -47,14 +47,14 @@ class Portfolio extends CI_Controller {
 		foreach ($resultado as $item) {
 			$imagem = base_url().'assets/img/upload/default.png';
 			if(!is_null($item->foto_1) && !empty($item->foto_1)){
-				$imagem = base_url().'upload/'.$item->foto_1;
+				$imagem = $item->foto_1;
 			}
 			array_push($json['data'], array(
 				'id' => $item->id,
 				'imagem' => '<img id="img" src="'.$imagem.'" style="max-height: 50px;">',
-				'nome' => $item->nome,
-				'tipo' => $item->tipo,
-				'status' => $item->status,
+				'inicio' => date('d/m/Y', strtotime($item->inicio)),
+				'termino' => ($item->projeto_andamento == 0) ? date('d/m/Y', strtotime($item->termino)) : '',
+				'andamento' => ($item->projeto_andamento == 0) ? 'NÃO' : 'SIM',
 				'mostrar_curriculo' => ($item->mostrar_curriculo == 0) ? 'NÃO' : 'SIM',
 				'acao' => '<button type="button" class="btn btn-link btn-sm" onclick="javascript:editar('.$item->id.')"><i class="fas fa-edit"></i></button>&nbsp;<button type="button" class="btn btn-link btn-sm text-danger" onclick="javascript:deletar('.$item->id.')"><i class="fas fa-trash"></i></button>',
 			));
@@ -81,7 +81,15 @@ class Portfolio extends CI_Controller {
 		$valor = $this->input->post();
 		$foto = $_FILES;
 
-		unset($valor[0]);
+		if(!isset($valor['projeto_andamento'])){
+			$valor['projeto_andamento'] = 0;
+		}
+		if(!isset($valor['mostrar_curriculo'])){
+			$valor['mostrar_curriculo'] = 0;
+		}
+		if(!isset($valor['mostrar_link'])){
+			$valor['mostrar_link'] = 0;
+		}
 
 		$this->load->model('portfolio_model');
 		$resultado = $this->portfolio_model->setPortfolio($valor);
@@ -98,7 +106,7 @@ class Portfolio extends CI_Controller {
 					$ext = explode('/', $item['type']);
 
 					$config = array(
-						'upload_path' => './upload/',
+						'upload_path' => './upload/portfolio',
 						'allowed_types' => '*',
 						'file_name' => 'portfolio'.$valor['id'].$cont.'.'.$ext[1],
 						'overwrite' => true
@@ -107,13 +115,14 @@ class Portfolio extends CI_Controller {
 					$this->load->library('upload', $config);
 
 					if(!$this->upload->do_upload('imagem_'.$cont)){
+						// print_r($this->upload->display_errors());
 						$aux = 1;
 					}else{
 						$dados['id'] = $valor['id'];
-						$dados['foto_'.$cont] = $config['file_name'];
+						$dados['foto_'.$cont] = base_url().'upload/portfolio/'.$config['file_name'];
 						$resultado = $this->portfolio_model->setPortfolio($dados);
 
-						if($resultado == 0 && $aux2 == 0){
+						if($resultado == 0){
 							$aux2 = 1;
 						}
 					}

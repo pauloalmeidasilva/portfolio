@@ -21,9 +21,9 @@ let tabela = $('#conteudo').DataTable({
 	"columns": [
 	{ "data": "id" },
 	{ "data": "imagem" },
-	{ "data": "nome" },
-	{ "data": "tipo" },
-	{ "data": "status" },
+	{ "data": "inicio" },
+	{ "data": "termino" },
+	{ "data": "andamento" },
 	{ "data": "mostrar_curriculo" },
 	{ "data": "acao" }
 	],
@@ -47,13 +47,13 @@ function editar(id) {
 			Load.close()
 
 			$.each(json, function(id, valor){
-				if(id == 'foto_1'){
-					$('#img_1').attr('src', BASE_URL+'upload/'+valor)
-				}else if(id == 'foto_2'){
-					$('#img_2').attr('src', BASE_URL+'upload/'+valor)
-				}else if(id == 'foto_3'){
-					$('#img_3').attr('src', BASE_URL+'upload/'+valor)
-				}else if(id == 'mostrar_curriculo' || id == 'mostrar_link'){
+				if(id == 'foto_1' && valor != null && valor != ''){
+					$('#img_1').attr('src', valor)
+				}else if(id == 'foto_2' && valor != null && valor != ''){
+					$('#img_2').attr('src', valor)
+				}else if(id == 'foto_3' && valor != null && valor != ''){
+					$('#img_3').attr('src', valor)
+				}else if(id == 'mostrar_curriculo' || id == 'mostrar_link' || id == 'projeto_andamento'){
 					if(valor == 1)
 						$('#'+id).attr('checked', '')
 					else

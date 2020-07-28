@@ -35,9 +35,9 @@
         <li class="<?php if($menu == 'postagem'){echo 'active';} ?>">
           <a href="<?=base_url('postagens')?>"><i class="fas fa-blog"></i>&nbsp;<span>Postagens</span></a>
         </li>
-        <li class="<?php if($menu == 'configuracoes'){echo 'active';} ?>">
-          <a href="<?=base_url('configuracoes')?>"><i class="fas fa-cog"></i>&nbsp;<span>Configurações</span></a>
-        </li>
+        <!-- <li class="<?php if($menu == 'configuracoes'){echo 'active';} ?>">
+          <a href="<?=base_url('')?>"><i class="fas fa-cog"></i>&nbsp;<span>Configurações</span></a>
+        </li> -->
         <li class="<?php if($menu == 'usuario'){echo 'active';} ?>">
           <a href="<?=base_url('usuario')?>"><i class="fas fa-user"></i>&nbsp;<span>Usuário</span></a>
         </li>

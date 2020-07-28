@@ -20,9 +20,9 @@
             <tr>
               <th>ID</th>
               <th>Imagem</th>
-              <th>Nome</th>
-              <th>Tipo</th>
-              <th>Status</th>
+              <th>Início</th>
+              <th>Término</th>
+              <th>Projeto em Andamento</th>
               <th>Visível no Currículo</th>
               <th>Ação</th>
             </tr>
@@ -31,9 +31,9 @@
             <tr>
               <th>ID</th>
               <th>Imagem</th>
-              <th>Nome</th>
-              <th>Tipo</th>
-              <th>Status</th>
+              <th>Início</th>
+              <th>Término</th>
+              <th>Projeto em Andamento</th>
               <th>Visível no Currículo</th>
               <th>Ação</th>
             </tr>

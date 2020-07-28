@@ -33,20 +33,6 @@
             <label for="descricao">Descrição do Projeto</label>
             <textarea id="descricao" name="descricao" class="form-control" maxlength="100" rows="3"></textarea>
           </div>
-          <div class="form-row">
-            <div class="form-group col-sm-6">
-              <label for="tipo">Tipo</label>
-              <select id="tipo" name="tipo" class="form-control">
-                <option value="0">---Selecione---</option>
-              </select>
-            </div>
-            <div class="form-group col-sm-6">
-              <label for="status">Status</label>
-              <select id="status" name="status" class="form-control">
-                <option value="0">---Selecione---</option>
-              </select>
-            </div>
-          </div>
           <div class="form-group">
             <label for="link_repositorio">Repositório</label>
             <input type="text" id="link_repositorio" name="link_repositorio" class="form-control" maxlength="100">
@@ -64,6 +50,10 @@
               <label for="termino">Termino do Projeto</label>
               <input type="date" id="termino" name="termino" class="form-control">
             </div>
+          </div>
+          <div class="custom-control custom-checkbox custom-control-inline">
+            <input type="checkbox" class="custom-control-input" name="projeto_andamento" id="projeto_andamento" value="1">
+            <label class="custom-control-label" for="projeto_andamento">Projeto em Andamento</label>
           </div>
           <div class="custom-control custom-checkbox custom-control-inline">
             <input type="checkbox" class="custom-control-input" name="mostrar_curriculo" id="mostrar_curriculo" value="1">
