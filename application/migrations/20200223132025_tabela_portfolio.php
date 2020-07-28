@@ -12,9 +12,19 @@ class Migration_tabela_portfolio extends CI_Migration {
         'unsigned' => TRUE,
         'auto_increment' => TRUE
       ),
-      'foto' => array(
+      'foto_1' => array(
         'type' => 'VARCHAR',
-        'constraint' => '20',
+        'constraint' => '255',
+      ),
+      ,
+      'foto_2' => array(
+        'type' => 'VARCHAR',
+        'constraint' => '255',
+      ),
+      ,
+      'foto_3' => array(
+        'type' => 'VARCHAR',
+        'constraint' => '255',
       ),
       'nome' => array(
         'type' => 'VARCHAR',
